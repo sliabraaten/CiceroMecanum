@@ -1,1 +1,2 @@
 # CiceroMecanum
+Provides the code for the ASME Design Competition, specifically the mecanum drive system for the robot. The controller handles PWM inputs from a wireless receiver (Forward/Backward, Strafe Right/Strafe Left, Rotate) interprets them, and provides an output to the motors in the corners of the robot. The program herein is intended for this controller. 

@@ -28,8 +28,6 @@
 //OUTPUT TO LEFT REAR MOTOR
 #define PWM13 13
 
-//PWM VALUES FOR ASSOCIATED POSITIONS
-#define FULL_FORWARD 255
 #define NEUTRAL 127
 #define FULL_REVERSE 0
 
@@ -41,6 +39,8 @@ Servo rearLeft;
 
 /**
  * default RO code prior to loop
+//PWM VALUES FOR ASSOCIATED POSITIONS
+#define FULL_FORWARD 255
  */
 void setup()
 {
@@ -89,7 +89,10 @@ void calibrateESCs (Servo * temp)
  */
 int rangeVal (int param)
 {
-
+  if (param < 0)
+    param = 0;
+  else if (param > 255)
+    param = 255;
 }
 
 /**
