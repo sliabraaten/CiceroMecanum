@@ -13,21 +13,22 @@
 #include <Servo.h>
 
 //INPUT Y AXIS (STRAIGHT)
-#define PWM2 2
+#define ControllerY 2
 //INPUT X AXIS (STRAFE)
-#define PWM3 3
+#define ControllerX 3
 //INPUT Z AXIS (ROTATE)
-#define PWM4 4
+#define ControllerZ 4
 
 //OUTPUT TO RIGHT FRONT MOTOR
-#define PWM10 10
+#define RightFrontMotor 10
 //OUTPUT TO RIGHT REAR MOTOR
-#define PWM11 11
+#define RightRearMotor 11
 //OUTPUT TO LEFT FRONT MOTOR
-#define PMW12 12
+#define LeftFrontMotor 12
 //OUTPUT TO LEFT REAR MOTOR
-#define PWM13 13
+#define LeftRearMotor 13
 
+#define FULL_FORWARD 255
 #define NEUTRAL 127
 #define FULL_REVERSE 0
 
@@ -44,7 +45,9 @@ Servo rearLeft;
  */
 void setup()
 {
-
+  setupController();
+  setupServos();
+  
 }
 
 /**
@@ -60,15 +63,24 @@ void loop()
  */
 void setupServos ()
 {
-
+  frontRight.attach(RightFrontMotor);
+  rearRight.attach(RightRearMotor);
+  frontLeft.attach(LeftFrontMotor);
+  rearLeft.attach(LeftRearMotor);
 }
 
 /**
- * setup for controller inputs into microcontroller
+ * setup for controller inputs and motor controller outputs of the microcontroller
  */
 void setupController ()
 {
-
+  pinMode(ControllerY, INPUT);
+  pinMode(ControllerY, INPUT);
+  pinMode(ControllerZ, INPUT);
+  pinMode(RightFrontMotor, OUTPUT);
+  pinMode(RightRearMotor, OUTPUT);
+  pinMode(LeftFrontMotor, OUTPUT);
+  pinMode(LeftRearMotor, OUTPUT);
 }
 
 /**
@@ -93,7 +105,22 @@ int rangeVal (int param)
     param = 0;
   else if (param > 255)
     param = 255;
+
+    return param;
 }
+
+/**
+ * * updates the input values from the controller
+ * @return an array of x, y and z values
+ */
+int updateControllerValues()
+{
+ int temp[3]; 
+ temp [0] = pulseIn(ControllerX, HIGH, 25000);
+ temp [1] = pulseIn(ControllerY, HIGH, 25000);
+ temp [2] = pulseIn(ControllerZ, HIGH, 25000);
+ return temp;
+ }
 
 /**
  * calculates and sets the output of the drive motors given the joystick input
