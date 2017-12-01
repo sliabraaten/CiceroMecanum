@@ -55,7 +55,8 @@ void setup()
  */
 void loop()
 {
-
+  int* temp = getControllerValues();
+  setMotorOutputs(temp[1],temp[0],temp[2]);
 }
 
 /**
@@ -113,9 +114,9 @@ int rangeVal (int param)
  * * updates the input values from the controller
  * @return an array of x, y and z values
  */
-int updateControllerValues()
+int *getControllerValues()
 {
- int temp[3]; 
+ static int temp[3]; 
  temp [0] = pulseIn(ControllerX, HIGH, 25000);
  temp [1] = pulseIn(ControllerY, HIGH, 25000);
  temp [2] = pulseIn(ControllerZ, HIGH, 25000);
@@ -131,5 +132,8 @@ int updateControllerValues()
  */
 void setMotorOutputs (int norm, int strafe, int rotate)
 {
-
+ frontRight.writeMicroseconds(FULL_FORWARD - (norm - strafe - rotate));
+ rearRight.writeMicroseconds(FULL_FORWARD - (norm + strafe - rotate));
+ frontLeft.writeMicroseconds(norm + strafe + rotate);
+ rearLeft.writeMicroseconds(norm - strafe + rotate);
 }
